@@ -18,7 +18,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 .PHONY: run clean
 
 run: $(TARGET)
-	./$(TARGET)
+	./$(TARGET) $(filter-out $@,$(MAKECMDGOALS))
 
 clean:
 	rm -rf $(BUILD_DIR)
