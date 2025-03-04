@@ -1,7 +1,8 @@
+#include "vm.h"
+
 #include <stdio.h>
 
 #include "common.h"
-#include "vm.h"
 #include "debug.h"
 
 // This module is eventually going to have a slew of functions and it would
@@ -9,51 +10,39 @@
 // Instead, we declare a single global VM object. We need only one anyway.
 VM vm;
 
-static void resetStack()
-{
-    vm.stackTop = vm.stack;
-}
+static void resetStack() { vm.stackTop = vm.stack; }
 
-void initVM()
-{
-    resetStack();
-}
+void initVM() { resetStack(); }
 
-void freeVM()
-{
-}
+void freeVM() {}
 
-static InterpretResult run()
-{
+static InterpretResult run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
-    for (;;)
-    {
+    for (;;) {
 #ifdef DEBUG_TRACE_EXECUTION
         printf("        ");
-        for (Value *slot = vm.stack; slot < vm.stackTop; slot++)
-        {
+        for (Value *slot = vm.stack; slot < vm.stackTop; slot++) {
             printf("[ ");
             printValue(*slot);
             printf(" ]");
         }
         printf("\n");
-        // little pointer math to convert ip back to a relative offset from the beginning of the bytecode
+        // little pointer math to convert ip back to a relative offset from the
+        // beginning of the bytecode
         dissasembleInstruction(vm.chunk, (int)(vm.ip - vm.chunk->code));
 #endif
         uint8_t instruction;
-        switch (instruction = READ_BYTE())
-        {
-        case OP_CONSTANT:
-        {
-            Value constant = READ_CONSTANT();
-            push(constant);
-            break;
-        }
-        case OP_RETURN:
-            printValue(pop());
-            printf("\n");
-            return INTERPRET_OK;
+        switch (instruction = READ_BYTE()) {
+            case OP_CONSTANT: {
+                Value constant = READ_CONSTANT();
+                push(constant);
+                break;
+            }
+            case OP_RETURN:
+                printValue(pop());
+                printf("\n");
+                return INTERPRET_OK;
         }
     }
 
@@ -61,21 +50,18 @@ static InterpretResult run()
 #undef READ_CONSTANT
 }
 
-InterpretResult interpret(Chunk *chunk)
-{
+InterpretResult interpret(Chunk *chunk) {
     vm.chunk = chunk;
     vm.ip = vm.chunk->code;
     return run();
 }
 
-void push(Value value)
-{
+void push(Value value) {
     *vm.stackTop = value;
     vm.stackTop++;
 }
 
-Value pop()
-{
+Value pop() {
     vm.stackTop--;
     return *vm.stackTop;
 }

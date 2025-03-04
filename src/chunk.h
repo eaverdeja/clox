@@ -4,14 +4,12 @@
 #include "common.h"
 #include "value.h"
 
-typedef enum
-{
+typedef enum {
     OP_CONSTANT,
     OP_RETURN,
 } OpCode;
 
-typedef struct
-{
+typedef struct {
     int count;
     int capacity;
     uint8_t *code;
