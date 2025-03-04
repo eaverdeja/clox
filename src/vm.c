@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "common.h"
+#include "compiler.h"
 #include "debug.h"
 
 // This module is eventually going to have a slew of functions and it would
@@ -29,7 +30,7 @@ static InterpretResult run() {
     for (;;) {
 #ifdef DEBUG_TRACE_EXECUTION
         printf("        ");
-        for (Value *slot = vm.stack; slot < vm.stackTop; slot++) {
+        for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
             printf("[ ");
             printValue(*slot);
             printf(" ]");
@@ -78,10 +79,9 @@ static InterpretResult run() {
 #undef READ_CONSTANT
 }
 
-InterpretResult interpret(Chunk *chunk) {
-    vm.chunk = chunk;
-    vm.ip = vm.chunk->code;
-    return run();
+InterpretResult interpret(const char* source) {
+    compile(source);
+    return INTERPRET_OK;
 }
 
 void push(Value value) {
