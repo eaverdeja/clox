@@ -67,6 +67,19 @@ make clean
 - Closures
 - Object-oriented programming support
 
+## Testing
+
+This project leverages the test suite from the original source repo.
+To run it, `cd` into the original source repo and run:
+
+```bash
+# For the whole test suite
+$ dart tool/bin/test.dart clox --interpreter ../clox/run_clox.sh
+
+# For a specific chapter
+$ dart tool/bin/test.dart chap17_compiling --interpreter ../clox/run_clox.sh
+```
+
 ## Learning Resources
 
 - [Crafting Interpreters](https://craftinginterpreters.com/) - The book guiding this implementation
