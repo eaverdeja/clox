@@ -69,7 +69,7 @@ make clean
 
 ## Testing
 
-This project leverages the test suite from the original source repo.
+This project leverages the [test suite from the original source repo](https://github.com/munificent/craftinginterpreters/blob/master/tool/bin/test.dart).
 To run it, `cd` into the original source repo and run:
 
 ```bash
