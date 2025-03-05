@@ -28,6 +28,10 @@ typedef enum {
     PREC_PRIMARY,
 } Precedence;
 
+typedef struct {
+    Precedence precedence;
+} ParseRule;
+
 Parser parser;
 Chunk* compilingChunk;
 
@@ -131,6 +135,34 @@ static void unary() {
         default:
             // Unreachable
             return;
+    }
+}
+
+static void binary() {
+    TokenType operatorType = parser.previous.type;
+    ParseRule* rule = getRule(operatorType);
+
+    // The "+1" approach ensures that each operator's right-hand side is parsed
+    // at a slightly higher precedence level, preventing lower-precedence
+    // operators from "stealing" parts of the expression they shouldn't.
+    // Ex. 1 + 2 * 3 the '+' shouldn't steal the '* 3' part of the expression.
+    parsePrecedence((Precedence)rule->precedence + 1);
+
+    switch (operatorType) {
+        case TOKEN_PLUS:
+            emitByte(OP_ADD);
+            break;
+        case TOKEN_MINUS:
+            emitByte(OP_SUBTRACT);
+            break;
+        case TOKEN_STAR:
+            emitByte(OP_MULTIPLY);
+            break;
+        case TOKEN_SLASH:
+            emitByte(OP_DIVIDE);
+            break;
+        default:
+            break;
     }
 }
 
