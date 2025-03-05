@@ -5,6 +5,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifdef CLOX_DEBUG
+#define DEBUG_PRINT_CODE
 #define DEBUG_TRACE_EXECUTION
+#endif
 
 #endif
