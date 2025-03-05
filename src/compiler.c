@@ -29,7 +29,7 @@ static void errorAt(Token* token, const char* message) {
         fprintf(stderr, " at '%.*s'", token->length, token->start);
     }
 
-    fprinft(stderr, ": %s\n", message);
+    fprintf(stderr, ": %s\n", message);
     parser.hadError = true;
 }
 
@@ -66,7 +66,7 @@ bool compile(const char* source, Chunk* chunk) {
     parser.panicMode = false;
 
     advance();
-    expression();
+    // expression();
     consume(TOKEN_EOF, "Expect end of expression.");
     return !parser.hadError;
 }
