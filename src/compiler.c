@@ -172,18 +172,15 @@ static void binary() {
 
 static void literal() {
     switch (parser.previous.type) {
-        case TOKEN_NIL: {
+        case TOKEN_NIL:
             emitByte(OP_NIL);
             break;
-        }
-        case TOKEN_TRUE: {
+        case TOKEN_TRUE:
             emitByte(OP_TRUE);
             break;
-        }
-        case TOKEN_FALSE: {
+        case TOKEN_FALSE:
             emitByte(OP_FALSE);
             break;
-        }
         default:
             return;  // Unreachable
     }
@@ -208,14 +205,12 @@ static void unary() {
     parsePrecedence(PREC_UNARY);
 
     switch (operatorType) {
-        case TOKEN_BANG: {
+        case TOKEN_BANG:
             emitByte(OP_NOT);
             break;
-        }
-        case TOKEN_MINUS: {
+        case TOKEN_MINUS:
             emitByte(OP_NEGATE);
             break;
-        }
         default:
             // Unreachable
             return;
