@@ -1,4 +1,6 @@
 /build
+/html
 
 .vscode
+Doxyfile
 test.lox
