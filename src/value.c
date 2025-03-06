@@ -4,6 +4,7 @@
 
 #include "chunk.h"
 #include "memory.h"
+#include "object.h"
 
 void initValueArray(ValueArray *array) {
     array->capacity = 0;
@@ -41,7 +42,9 @@ void printValue(Value value) {
         case VAL_NUMBER: {
             printf("%g", AS_NUMBER(value));
             break;
-        }
+        case VAL_OBJ:
+            printObject(value);
+            break;
     }
 }
 
