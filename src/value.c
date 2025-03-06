@@ -31,15 +31,13 @@ void freeValueArray(ValueArray *array) {
 
 void printValue(Value value) {
     switch (value.type) {
-        case VAL_NIL: {
+        case VAL_NIL:
             printf("nil");
             break;
-        }
-        case VAL_BOOL: {
+        case VAL_BOOL:
             printf(AS_BOOL(value) ? "true" : "false");
             break;
-        }
-        case VAL_NUMBER: {
+        case VAL_NUMBER:
             printf("%g", AS_NUMBER(value));
             break;
         case VAL_OBJ:
