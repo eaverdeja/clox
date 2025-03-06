@@ -6,6 +6,7 @@
 // Forward-declared here because of cyclic dependencies
 // between Values and Objects
 typedef struct Obj Obj;
+typedef struct ObjString ObjString;
 
 typedef enum {
     VAL_BOOL,
