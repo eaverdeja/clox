@@ -37,10 +37,12 @@ static void runtimeError(const char* format, ...) {
 void initVM() {
     resetStack();
     vm.objects = NULL;
+    initTable(&vm.globals);
     initTable(&vm.strings);
 }
 
 void freeVM() {
+    freeTable(&vm.globals);
     freeTable(&vm.strings);
     freeObjects();
 }
@@ -78,6 +80,7 @@ static void concatenate() {
 static InterpretResult run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
+#define READ_STRING() AS_STRING(READ_CONSTANT())
 #define BINARY_OP(valueType, op)                          \
     do {                                                  \
         if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) { \
@@ -121,6 +124,16 @@ static InterpretResult run() {
             case OP_POP:
                 pop();
                 break;
+            case OP_DEFINE_GLOBAL: {
+                ObjString* name = READ_STRING();
+                // We don’t pop the value until after we add it to the hash
+                // table. That ensures the VM can still find the value if a
+                // garbage collection is triggered right in the middle of adding
+                // it to the hash table.
+                tableSet(&vm.globals, name, peek(0));
+                pop();
+                break;
+            }
             case OP_NOT:
                 push(BOOL_VAL(isFalsey(pop())));
                 break;
@@ -177,6 +190,7 @@ static InterpretResult run() {
 #undef BINARY_OP
 #undef READ_BYTE
 #undef READ_CONSTANT
+#undef READ_STRING
 }
 
 InterpretResult interpret(const char* source) {
