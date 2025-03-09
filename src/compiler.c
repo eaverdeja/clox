@@ -408,15 +408,16 @@ static void namedVariable(Token name, bool canAssign) {
         getOp = OP_GET_LOCAL;
         setOp = OP_SET_LOCAL;
     } else {
+        arg = identifierConstant(&name);
         getOp = OP_GET_GLOBAL;
         setOp = OP_SET_GLOBAL;
     }
 
     if (canAssign && match(TOKEN_EQUAL)) {
         expression();
-        emitBytes(setOp, arg);
+        emitBytes(setOp, (uint8_t)arg);
     } else {
-        emitBytes(getOp, arg);
+        emitBytes(getOp, (uint8_t)arg);
     }
 }
 
