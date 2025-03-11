@@ -100,6 +100,9 @@ static InterpretResult run() {
         push(valueType(a op b));                          \
     } while (false)
 
+#ifdef DEBUG_TRACE_EXECUTION
+    printf("\nExecution trace:\n");
+#endif
     for (;;) {
 #ifdef DEBUG_TRACE_EXECUTION
         printf("        ");
