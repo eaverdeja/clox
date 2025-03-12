@@ -33,7 +33,7 @@ static int jumpInstruction(const char *name, int sign, Chunk *chunk,
 
 static int constantInstruction(const char *name, Chunk *chunk, int offset) {
     uint8_t constant = chunk->code[offset + 1];
-    printf("%-16s %4d '", name, constant);
+    printf("%-16s %4d ", name, constant);
     printValue(chunk->constants.values[constant]);
     printf("\n");
     return offset + 2;
@@ -95,6 +95,8 @@ int dissasembleInstruction(Chunk *chunk, int offset) {
             return jumpInstruction("OP_JUMP_IF_FALSE", 1, chunk, offset);
         case OP_LOOP:
             return jumpInstruction("OP_LOOP", -1, chunk, offset);
+        case OP_CALL:
+            return byteInstruction("OP_CALL", chunk, offset);
         case OP_RETURN:
             return simpleInstruction("OP_RETURN", offset);
         default:
