@@ -471,7 +471,7 @@ static void function(FunctionType type) {
         do {
             current->function->arity++;
             if (current->function->arity > 255) {
-                errorAtCurrent("Can't have more than 255 parameters");
+                errorAtCurrent("Can't have more than 255 parameters.");
             }
             uint8_t constant = parseVariable("Expect parameter name.");
             defineVariable(constant);
