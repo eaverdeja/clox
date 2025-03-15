@@ -78,6 +78,7 @@ static void blackenObject(Obj *object) {
             for (int i = 0; i < closure->upvalueCount; i++) {
                 markObject((Obj *)closure->upvalues[i]);
             }
+            break;
         }
         case OBJ_FUNCTION: {
             ObjFunction *function = (ObjFunction *)object;
