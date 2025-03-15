@@ -41,7 +41,11 @@ ObjString* allocateString(char* chars, int length, u_int32_t hash) {
     string->chars = chars;
     string->length = length;
     string->hash = hash;
+
+    push(OBJ_VAL(string));
     tableSet(&vm.strings, string, NIL_VAL);
+    pop();
+
     return string;
 }
 
