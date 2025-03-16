@@ -154,7 +154,7 @@ static bool callValue(Value callee, int argCount) {
 static bool invokeFromClass(ObjClass* klass, ObjString* name, int argCount) {
     Value method;
     if (!tableGet(&klass->methods, name, &method)) {
-        runtimeError("Undefined property '%s'", name->chars);
+        runtimeError("Undefined property '%s'.", name->chars);
         return false;
     }
     return call(AS_CLOSURE(method), argCount);
@@ -187,6 +187,7 @@ static bool bindMethod(ObjClass* klass, ObjString* name) {
     }
 
     ObjBoundMethod* bound = newBoundMethod(peek(0), AS_CLOSURE(method));
+    pop();
     push(OBJ_VAL(bound));
     return true;
 }
